@@ -10,6 +10,7 @@ __pycache__/
 *.manifest
 *.spec
 *.db
+*.
 
 # Django
 *.log
@@ -19,6 +20,8 @@ __pycache__/
 *.sqlite3
 db.sqlite3
 .env
+venv/
+.venv/
 
 # Django Migrations
 **/migrations/
