@@ -1,0 +1,20 @@
+{
+  "name": "projet_django",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tailwindcss build app/static/css/input.css -o app/static/css/tailwind.css",
+    "watch": "npx tailwindcss build app/static/css/input.css -o app/static/css/tailwind.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "autoprefixer": "^10.4.19",
+    "flowbite": "^2.4.1",
+    "postcss": "^8.4.40",
+    "tailwindcss": "^3.4.7"
+  }
+}

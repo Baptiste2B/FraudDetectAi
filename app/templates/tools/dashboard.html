@@ -1,0 +1,328 @@
+{% extends "tools/base.html" %}
+
+{% block title %}Dashboard{% endblock title %}
+{% block head %}<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>{% endblock head %}
+{% block content %}
+  <div class="pt-2">
+    <header class="flex items-center justify-between mb-6">
+      <h1 class="text-3xl font-semibold">Dashboard</h1>
+      <div class="flex items-center">
+        {% comment %} <input type="text" placeholder="Search..." class="px-4 py-2 border rounded-lg"> {% endcomment %}
+      </div>
+    </header>
+    <div class="mb-6">
+<label for="previous-prediction">Select Previous Prediction:</label>
+<select id="previous-prediction" onchange="window.location.href=this.value;">
+  <option value="">Choose a Prediction</option>
+  {% for prediction in previous_predictions %}
+    <option value="{% url 'get_previous_prediction' prediction.id %}">
+      {{ prediction.created_at|date:"Y-m-d H:i" }}
+    </option>
+  {% endfor %}
+</select>
+    </div>
+{% if single_prediction %}
+<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+  <!-- Card 1: Probability of Fraud -->
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Probability of Fraud</p>
+        <h3 class="text-xl font-semibold">{{ single_prediction.probability|floatformat:2 }}%</h3>
+      </div>
+      <div class="p-3 rounded-full">
+        <i class="fa-solid fa-exclamation-circle"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 2: Predicted Class -->
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Predicted Class</p>
+        <h3 class="text-xl font-semibold">
+          {% if single_prediction.prediction_class == 0 %}
+            No Fraud
+          {% elif single_prediction.prediction_class == 1 %}
+            Potential Fraud
+          {% else %}
+            Fraud
+          {% endif %}
+        </h3>
+      </div>
+      <div class="p-3 rounded-full">
+        <i class="fa-solid fa-balance-scale"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3: Threshold Used -->
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Threshold Used</p>
+        <h3 class="text-xl font-semibold">0.65</h3>
+      </div>
+      <div class="p-3 rounded-full">
+        <i class="fa-solid fa-sliders-h"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 4: Model Explanation -->
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Model Explanation</p>
+        <h3 class="text-xl font-semibold">SHAP Values</h3>
+      </div>
+      <div class="p-3 rounded-full">
+        <i class="fa-solid fa-chart-bar"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SHAP Values Graph -->
+<div class="mt-8 grid grid-cols-1 xl:grid-cols-2 gap-6">
+  <!-- SHAP Values Analysis (Local) -->
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold mb-4">SHAP Values Analysis (Local)</h2>
+    {% if shap_image_local %}
+      <img src="{{ shap_image_local }}" alt="SHAP Waterfall Plot (Local)">
+    {% else %}
+      <p>No SHAP values available.</p>
+    {% endif %}
+  </div>
+
+  <!-- SHAP Values Analysis (Global) -->
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold mb-4">SHAP Values Analysis (Global)</h2>
+    {% if shap_image_global %}
+      <img src="{{ shap_image_global }}" alt="SHAP Waterfall Plot (Global)">
+    {% else %}
+      <p>No SHAP values available.</p>
+    {% endif %}
+  </div>
+</div>
+{% comment %}
+<div class="mt-8 grid grid-cols-2 xl:grid-cols-2 gap-6">
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold mb-4">probability-vs-threshold</h2>
+    <div id="probability-vs-threshold" style="width:600px;height:400px;"></div>
+  </div>
+</div>
+<div class="mt-8 grid grid-cols-2 xl:grid-cols-2 gap-6">
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold mb-4">probability-distribution</h2>
+    <div id="probability-distribution" style="width:600px;height:400px;"></div>
+  </div>
+</div>
+{% endcomment %}
+
+<script>
+    // Récupération des données de la probabilité et du seuil depuis Django
+    var probability = {{ single_prediction.probability|default:0 }};
+    var threshold = 0.65; // Vous pouvez récupérer ce seuil dynamiquement si nécessaire
+
+    // Graphique: Probability vs Threshold
+    var trace1 = {
+        x: [threshold],
+        y: [0],
+        mode: 'lines',
+        name: 'Threshold',
+        line: {color: 'red', width: 4, dash: 'dash'}
+    };
+
+    var trace2 = {
+        x: [probability],
+        y: [0],
+        mode: 'markers',
+        name: 'Probability',
+        marker: {color: 'blue', size: 12}
+    };
+
+    var data = [trace1, trace2];
+
+    var layout = {
+        title: 'Probability vs Threshold',
+        xaxis: {title: 'Probability', range: [0, 1]},
+        yaxis: {showticklabels: false},
+        showlegend: false
+    };
+
+    Plotly.newPlot('probability-vs-threshold', data, layout);
+
+    // Graphique: Distribution of Probabilities vs Threshold
+    var trace3 = {
+        x: [probability],
+        type: 'histogram',
+        name: 'Probability Distribution',
+        marker: {color: 'skyblue', opacity: 0.7},
+        autobinx: false,
+        xbins: {
+            start: 0,
+            end: 1,
+            size: 0.05
+        }
+    };
+
+    var trace4 = {
+        x: [threshold],
+        mode: 'lines',
+        name: 'Threshold',
+        line: {color: 'red', width: 4, dash: 'dash'},
+        yaxis: 'y2'
+    };
+
+    var data2 = [trace3, trace4];
+
+    var layout2 = {
+        title: 'Distribution of Probabilities vs Threshold',
+        xaxis: {title: 'Probability', range: [0, 1]},
+        yaxis: {title: 'Count', rangemode: 'nonnegative'},
+        showlegend: false,
+        bargap: 0.05  // Add this line to avoid gaps between bars
+    };
+
+    Plotly.newPlot('probability-distribution', data2, layout2);
+</script>
+{% else %}
+
+  <!-- Main content -->
+
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+      <!-- Card 1 -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-500">Fraude Rate</p>
+            <h3 class="text-xl font-semibold">{{fraud_rate|floatformat:2 }}%</h3>
+            {% comment %} <p class="text-sm text-green-500">+55%</p> {% endcomment %}
+          </div>
+          <div class=" p-3 rounded-full">
+            <i class="fa-solid fa-money-check"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-500">Fraud</p>
+            <h3 class="text-xl font-semibold">{{count_1}}</h3>
+            {% comment %} <p class="text-sm text-green-500">+3%</p> {% endcomment %}
+          </div>
+          <div class="p-3 rounded-full">
+            <i class="fa-solid fa-xmark"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-500">Potential Fraud</p>
+            <h3 class="text-xl font-semibold">{{count_2}}</h3>
+            {% comment %} <p class="text-sm text-green-500">+5%</p> {% endcomment %}
+          </div>
+          <div class=" p-3 rounded-full">
+            <i class="fa-solid fa-money-bill-transfer"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-500">No fraud</p>
+            <h3 class="text-xl font-semibold">{{count_0}}</h3>
+            {% comment %} <p class="text-sm text-red-500">-2%</p> {% endcomment %}
+          </div>
+          <div class="p-3 rounded-full">
+            <i class="fa-solid fa-check-to-slot"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+          <!-- Threshold adjustment form -->
+  {% comment %} <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+    <h2 class="text-xl font-semibold mb-4">Adjust Threshold</h2>
+    <form id="threshold-form" method="post" action="{% url 'dashboard' %}">
+      {% csrf_token %}
+      <div class="flex items-center">
+        <input type="range" name="threshold" id="threshold" min="0.55" max="0.80" step="0.01" value="{{ threshold|default:0.5 }}" class="mr-4">
+        <span id="threshold-value" class="text-lg font-semibold">{{ threshold|default:0.5 }}</span>
+      </div>
+      <button type="submit" class="mt-4 p-2 bg-green-500 text-white rounded-lg">Update Threshold</button>
+    </form>
+  </div> {% endcomment %}
+
+    <!-- Graphs -->
+    <div class="mt-8 grid grid-cols-1 xl:grid-cols-2 gap-6">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-4">Analysis of Features</h2>
+        <label for="feature-selector">Choose a feature to visualize:</label>
+        <select id="feature-selector" class="mt-2 mb-4 p-2 border rounded">
+            {% for feature in feature_list %}
+                <option value="{{ feature }}">{{ feature }}</option>
+            {% endfor %}
+        </select>
+        <div id="graph"></div>
+      </div> 
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-4">Fraud Overview</h2>
+        <div id="chart2" style="height: 500px;"></div>
+      </div>
+    </div>
+  <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+          const featureSelector = document.getElementById('feature-selector');
+          const graphDiv = document.getElementById('graph');
+          const graphs = {{ graphs|safe }};  // Inject the JSON graphs data
+  
+          featureSelector.addEventListener('change', function () {
+              const selectedFeature = featureSelector.value;
+              const graphData = JSON.parse(graphs[selectedFeature]);
+  
+              Plotly.react(graphDiv, graphData.data, graphData.layout);
+          });
+  
+          // Trigger change event on page load to show the first feature by default
+          featureSelector.dispatchEvent(new Event('change'));
+      });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var count_0 = {{ count_0 }};
+        var count_1 = {{ count_1 }};
+        var count_2 = {{ count_2 }};
+
+        var data2 = [{
+            x: ['Fraud', 'Potential Fraud', 'No Fraud'],
+            y: [count_2, count_1, count_0],
+            type: 'bar',
+            marker: {
+                color: ['#EF553B', '#FFA15A', '#00CC96']
+            }
+        }];
+
+        var layout2 = {
+            margin: { t: 30 },
+            title: 'Fraud Overview',
+            xaxis: { title: 'Fraud Type' },
+            yaxis: { title: 'Count' },
+            plot_bgcolor: '#f8f9fa',
+            paper_bgcolor: '#f8f9fa',
+        };
+
+        Plotly.newPlot('chart2', data2, layout2);
+    });
+</script>
+{% endif %}
+  </div>
+{% endblock content %}

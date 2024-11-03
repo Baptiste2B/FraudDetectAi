@@ -1,0 +1,239 @@
+{% extends "tools/base.html" %}
+{% block title %}Documentation{% endblock title %}
+{% block content %}
+<div class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto px-4 py-10">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h1 class="text-4xl font-semibold text-center text-blue-600 mb-10">Fraud Detection Features Documentation</h1>
+            
+            <!-- Income -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Income</h2>
+                <p class="text-gray-600 mt-2 ml-4">Description: The declared income of the customer.</p>
+                <p class="text-gray-600 ml-4">Importance: Income level can help identify abnormal behaviors, such as spending disproportionate to income.</p>
+            </section>
+            <div class="border-t border-gray-300 my-8"></div>
+
+            <!-- Name Email Similarity -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Name Email Similarity</h2>
+                <p class="text-gray-600 mt-2 ml-4">Description: A score representing the similarity between the customer's name and the email address used.</p>
+                <p class="text-gray-600 ml-4">Importance: Low similarity might indicate the use of a fraudulent email address.</p>
+            </section>
+            <div class="border-t border-gray-300 my-8"></div>
+
+            <!-- Previous Address Months Count -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Previous Address Months Count</h2>
+                <p class="text-gray-600 mt-2 ml-4">Description: The number of months the customer has lived at their previous address.</p>
+                <p class="text-gray-600 ml-4">Importance: Customers who frequently change addresses may present a higher risk of fraud.</p>
+            </section>
+            <div class="border-t border-gray-300 my-8"></div>
+
+            <!-- Current Address Months Count -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Current Address Months Count</h2>
+                <p class="text-gray-600 mt-2 ml-4">Description: The number of months the customer has lived at their current address.</p>
+                <p class="text-gray-600 ml-4">Importance: A short period at the same address could be an indicator of fraud, especially when combined with other suspicious factors.</p>
+            </section>
+            <div class="border-t border-gray-300 my-8"></div>
+
+            <!-- Customer Age -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Customer Age</h2>
+                <p class="text-gray-600 mt-2 ml-4">Description: The age of the customer.</p>
+                <p class="text-gray-600 ml-4">Importance: Certain age groups may be more vulnerable to fraud or more likely to be involved in fraudulent activities.</p>
+            </section>
+            <div class="border-t border-gray-300 my-8"></div>
+
+            <!-- Days Since Request -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Days Since Request</h2>
+                <p class="text-gray-600 mt-2 ml-4">Description: The number of days since the request was submitted.</p>
+                <p class="text-gray-600 ml-4">Importance: Recent or very old requests may present different risks depending on the context.</p>
+            </section>
+            <div class="border-t border-gray-300 my-8"></div>
+
+            <!-- Intended Balance Amount -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Intended Balance Amount</h2>
+                <p class="text-gray-600 mt-2 ml-4">Description: The amount the customer intends to maintain in their account.</p>
+                <p class="text-gray-600 ml-4">Importance: An unusual or high amount compared to the customer's usual habits may be suspicious.</p>
+            </section>
+            <div class="border-t border-gray-300 my-8"></div>
+
+            <!-- Payment Type -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Payment Type</h2>
+                <p class="text-gray-600 mt-2 ml-4">Description: The type of payment method used (credit card, wire transfer, etc.).</p>
+                <p class="text-gray-600 ml-4">Importance: Certain types of payments may be more often associated with fraud.</p>
+            </section>
+            <div class="border-t border-gray-300 my-8"></div>
+
+            <!-- ZIP Count (Last 4 Weeks) -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">ZIP Count (Last 4 Weeks)</h2>
+                <p class="text-gray-600 mt-2 ml-4">Description: The number of ZIP codes associated with the customer's transactions in the last 4 weeks.</p>
+                <p class="text-gray-600 ml-4">Importance: A large number of different ZIP codes might indicate fraudulent behavior, particularly in cases of identity theft.</p>
+            </section>
+            <div class="border-t border-gray-300 my-8"></div>
+
+            <!-- Velocity (Last 6 Hours) -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Velocity (Last 6 Hours)</h2>
+                <p class="text-gray-600 mt-2 ml-4">Description: The number of transactions made by the customer in the last 6 hours.</p>
+                <p class="text-gray-600 ml-4">Importance: A high frequency of transactions in a short period might be a sign of fraud.</p>
+            </section>
+            <div class="border-t border-gray-300 my-8"></div>
+
+            <!-- Velocity (Last 24 Hours) -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Velocity (Last 24 Hours)</h2>
+                <p class="text-gray-600 mt-2 ml-4">Description: The number of transactions made by the customer in the last 24 hours.</p>
+                <p class="text-gray-600 ml-4">Importance: Helps identify abnormal or unusual transactional behaviors.</p>
+            </section>
+            <div class="border-t border-gray-300 my-8"></div>
+
+            <!-- Velocity (Last 4 Weeks) -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Velocity (Last 4 Weeks)</h2>
+                <p class="text-gray-600 mt-2 ml-4">Description: The total number of transactions made by the customer in the last 4 weeks.</p>
+                <p class="text-gray-600 ml-4">Importance: Helps detect unusual transactional patterns over a longer period.</p>
+            </section>
+            <div class="border-t border-gray-300 my-8"></div>
+
+            <!-- Bank Branch Count (Last 8 Weeks) -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Bank Branch Count (Last 8 Weeks)</h2>
+                <p class="text-gray-600 mt-2 ml-4">Description: The number of bank branches used by the customer in the last 8 weeks.</p>
+                <p class="text-gray-600 ml-4">Importance: Frequent use of multiple branches can be an indicator of fraud.</p>
+            </section>
+        <!-- Employment Status -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Employment Status</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: The current employment status of the customer (employed, unemployed, retired, etc.).</p>
+            <p class="text-gray-600 ml-4">Importance: Employment status can affect the likelihood of fraud, especially in case of mismatch with other information.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+        <!-- Credit Risk Score -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Credit Risk Score</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: A score representing the customer's credit risk.</p>
+            <p class="text-gray-600 ml-4">Importance: A low score may indicate a higher likelihood of fraud.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+        <!-- Email Is Free -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Email Is Free</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: Indicates whether the customer's email address is associated with a free service (e.g., Gmail, Yahoo).</p>
+            <p class="text-gray-600 ml-4">Importance: Free emails are easier to obtain anonymously and can be an indicator of fraud.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+        <!-- Housing Status -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Housing Status</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: The customer's housing status (owner, renter, etc.).</p>
+            <p class="text-gray-600 ml-4">Importance: Housing status can provide clues about the customer's financial stability.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+        <!-- Phone Home Valid -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Phone Home Valid</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: Indicates whether the customer's home phone number is valid.</p>
+            <p class="text-gray-600 ml-4">Importance: An invalid phone number may be an indicator of fraud or a false identity.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+        <!-- Phone Mobile Valid -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Phone Mobile Valid</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: Indicates whether the customer's mobile phone number is valid.</p>
+            <p class="text-gray-600 ml-4">Importance: An invalid mobile phone number may be an indicator of fraud or a false identity.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+        <!-- Bank Months Count -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Bank Months Count</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: The number of months the customer has held a bank account.</p>
+            <p class="text-gray-600 ml-4">Importance: A very short duration may be suspicious, especially if other fraud indicators are present.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+        <!-- Has Other Cards -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Has Other Cards</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: Indicates whether the customer has other credit or debit cards.</p>
+            <p class="text-gray-600 ml-4">Importance: Having multiple cards can increase the risk of fraud.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+        <!-- Proposed Credit Limit -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Proposed Credit Limit</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: The amount of credit limit proposed for the customer.</p>
+            <p class="text-gray-600 ml-4">Importance: A high credit request relative to the customer's usual profile may signal fraudulent behavior.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+        <!-- Foreign Request -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Foreign Request</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: Indicates whether the request was made from a foreign country.</p>
+            <p class="text-gray-600 ml-4">Importance: Requests from foreign countries may be more susceptible to fraud, especially if they do not match the customer's profile.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+        <!-- Source -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Source</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: The channel through which the request was made (web, mobile, etc.).</p>
+            <p class="text-gray-600 ml-4">Importance: Some channels may be more vulnerable to fraudulent activities.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+        <!-- Session Length (Minutes) -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Session Length (Minutes)</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: The length of the session in minutes during the request.</p>
+            <p class="text-gray-600 ml-4">Importance: An unusually long or short session duration may indicate a fraud attempt.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+        <!-- Device OS -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Device OS</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: The operating system of the device used to make the request.</p>
+            <p class="text-gray-600 ml-4">Importance: Knowing the operating system can help identify suspicious behaviors, such as detecting an OS rarely used by the customer.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+        <!-- Keep Alive Session -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Keep Alive Session</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: Indicates whether the user's session is kept alive over an extended period.</p>
+            <p class="text-gray-600 ml-4">Importance: A session kept active without action might be a sign of malicious manipulation.</p>
+        </section>
+        <!-- Device Fraud Count -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Device Fraud Count</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: The number of frauds previously associated with the device used.</p>
+            <p class="text-gray-600 ml-4">Importance: A device with a history of frauds is a high-risk indicator.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+        <!-- Month -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 border-l-4 border-blue-500 pl-4">Month</h2>
+            <p class="text-gray-600 mt-2 ml-4">Description: The month during which the request was made.</p>
+            <p class="text-gray-600 ml-4">Importance: Certain times of the year may see an increase in fraudulent activities, making this an important factor to monitor.</p>
+        </section>
+        <div class="border-t border-gray-300 my-8"></div>
+
+    </div>
+</div>
+{% endblock content %}

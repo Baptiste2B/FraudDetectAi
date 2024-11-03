@@ -1,0 +1,31 @@
+{% extends "tools/base.html" %}
+
+{% block title %}Dashboard - Previous PREDICT{% endblock title %}
+
+{% block content %}
+<div class="container mx-auto">
+    <h1 class="text-3xl font-semibold pt-2">Dashboard - Previous Predict</h1>
+    <!-- Menu déroulant pour sélectionner une prédiction -->
+    <a href="{% url 'dashboard' %}" class="pt-2 underline">Retour en arrière</a>
+    
+    <!-- Statistiques de fraude -->
+    <div id="fraud-stats pt-4" class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <p class="text-sm text-gray-500">Fraude Rate</p>
+            <h3 class="text-xl font-semibold">{{ fraud_rate|floatformat:2 }}%</h3>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <p class="text-sm text-gray-500">Fraud</p>
+            <h3 class="text-xl font-semibold">{{ count_1 }}</h3>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <p class="text-sm text-gray-500">Potential Fraud</p>
+            <h3 class="text-xl font-semibold">{{ count_2 }}</h3>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <p class="text-sm text-gray-500">No fraud</p>
+            <h3 class="text-xl font-semibold">{{ count_0 }}</h3>
+        </div>
+    </div>
+</div>
+{% endblock content %}

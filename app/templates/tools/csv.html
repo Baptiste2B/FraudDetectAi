@@ -1,0 +1,49 @@
+{% extends "tools/base.html" %}
+{% load static %}
+  {% block head %}<link href="{% static 'css/tools/ag-grid-theme-builder.css' %}" rel="stylesheet">
+  <style>
+    .ag-theme-alpine {
+      height: 400px;
+      width: 600px;
+      margin: 0 auto;
+    }
+  </style>
+
+  {% endblock head %}
+{% block content %}
+  <div id="myGrid" class="w-full h-full absolute"></div>
+  <!-- ag-Grid JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
+  <script>
+    // Configuration des colonnes
+    var columnDefs = [
+      { headerName: "Nom", field: "name", sortable: true, filter: true },
+      { headerName: "Âge", field: "age", sortable: true, filter: 'agNumberColumnFilter' },
+      { headerName: "Pays", field: "country", sortable: true, filter: true }
+    ];
+
+    // Données de démonstration
+    var rowData = [
+      { name: "John Doe", age: 25, country: "USA" },
+      { name: "Jane Smith", age: 30, country: "Canada" },
+      { name: "Paul Johnson", age: 40, country: "UK" },
+      { name: "Ana Adams", age: 35, country: "Australia" },
+      { name: "Samantha Fox", age: 50, country: "France" }
+    ];
+
+    // Création de la grille
+    var gridOptions = {
+      columnDefs: columnDefs,
+      rowData: rowData,
+      pagination: true,
+      paginationPageSize: 10,
+      domLayout: 'autoHeight'
+    };
+
+    // Initialisation de la grille une fois le DOM chargé
+    document.addEventListener('DOMContentLoaded', function() {
+      var gridDiv = document.querySelector('#myGrid');
+      new agGrid.Grid(gridDiv, gridOptions);
+    });
+  </script>
+  {% endblock content %}

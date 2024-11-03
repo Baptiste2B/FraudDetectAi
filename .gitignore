@@ -1,0 +1,76 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.so
+*.egg-info/
+*.egg
+*.manifest
+*.spec
+*.db
+
+# Django
+*.log
+*.pot
+*.pyc
+*.pyo
+*.sqlite3
+db.sqlite3
+.env
+
+# Django Migrations
+**/migrations/
+
+# Django Static and Media
+staticfiles/
+media/
+
+# Environments
+.env
+*.env
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Docker
+*.log
+*.pid
+*.seed
+*.backup
+*.swp
+Dockerfile
+docker-compose.yml
+__pycache__/
+
+# macOS
+.DS_Store
+.Spotlight-V100
+.Trashes
+*.swp
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# PyCharm
+.idea/
+
+# Coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+coverage.xml
+*.cover
+
+# Test output
+*.log
+*.out

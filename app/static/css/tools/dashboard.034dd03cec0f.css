@@ -1,0 +1,32 @@
+.gradient-bg {
+    background: linear-gradient(to right, #f0f0f0, #ffffff);
+  }
+  .sidebar {
+    width: 16rem; /* 64 */
+    background-color: #1f2937; /* bg-gray-800 */
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding-top: 2rem;
+  }
+  .sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    color: white;
+    text-decoration: none;
+  }
+  .sidebar a:hover {
+    background-color: #374151; /* hover:bg-gray-700 */
+  }
+  .sidebar .icon {
+    margin-right: 1rem;
+    font-size: 1.5rem; /* Icon size */
+  }
+  .main-content {
+    margin-left: 16rem; /* Same as sidebar width */
+    padding: 2rem;
+    background-color: #f9fafb; /* bg-gray-100 */
+  }
